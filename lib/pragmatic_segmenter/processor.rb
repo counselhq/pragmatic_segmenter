@@ -12,7 +12,7 @@ module PragmaticSegmenter
   class Processor
 
     attr_reader :text
-    def initialize(language: Languages::Common, split_lists)
+    def initialize(language: Languages::Common, split_lists:)
       @language = language
       @split_lists = split_lists
     end
