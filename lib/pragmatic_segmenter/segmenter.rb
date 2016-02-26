@@ -22,7 +22,7 @@ module PragmaticSegmenter
 
     def segment
       return [] unless @text
-      processor.new(language: @language_module).process(text: @text, split_lists: @split_lists)
+      processor.new(language: @language_module, split_lists: @split_lists).process(text: @text)
     end
 
     private
