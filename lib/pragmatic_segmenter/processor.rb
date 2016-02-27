@@ -12,12 +12,13 @@ module PragmaticSegmenter
   class Processor
 
     attr_reader :text
-    def initialize(language: Languages::Common)
+    def initialize(language: Languages::Common, split_lists:)
       @language = language
+      @split_lists = split_lists
     end
 
     def process(text:)
-      @text = List.new(text: text).add_line_break
+      @text = List.new(text: text).add_line_break(@split_lists)
       replace_abbreviations
       replace_numbers
       replace_continuous_punctuation
@@ -87,7 +88,7 @@ module PragmaticSegmenter
         @language::QuestionMarkInQuotationRule,
         @language::ExclamationPointRules::All
       )
-      txt = List.new(text: txt).replace_parens
+      txt = List.new(text: txt).replace_parens(@split_lists)
       sentence_boundary_punctuation(txt)
     end
 

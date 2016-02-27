@@ -46,14 +46,16 @@ module PragmaticSegmenter
       @text = Text.new(text)
     end
 
-    def add_line_break
+    def add_line_break(split_lists)
+      return text unless split_lists
       format_alphabetical_lists
       format_roman_numeral_lists
       format_numbered_list_with_periods
       format_numbered_list_with_parens
     end
 
-    def replace_parens
+    def replace_parens(split_lists)
+      return text unless split_lists
       ROMAN_NUMERALS.each do |rm|
         next unless text =~ /\(#{Regexp.escape(rm)}\)\s[A-Z]/
         text.gsub!(/\(#{Regexp.escape(rm)}\)(?=\s[A-Z])/) do |match|
