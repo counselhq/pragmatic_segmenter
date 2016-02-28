@@ -47,6 +47,7 @@ module PragmaticSegmenter
       number_abbr = @language::Abbreviation::NUMBER_ABBREVIATIONS
       upper = /[[:upper:]]/.match(character.to_s)
       if upper.nil? || prepositive.include?(Unicode::downcase(am.strip))
+        txt = replace_pre_parens_abbr(txt, am)
         if prepositive.include?(Unicode::downcase(am.strip))
           txt = replace_prepositive_abbr(txt, am)
         elsif number_abbr.include?(Unicode::downcase(am.strip))
@@ -102,6 +103,11 @@ module PragmaticSegmenter
 
     def replace_pre_number_abbr(txt, abbr)
       txt.gsub!(/(?<=\s#{abbr.strip})\.(?=\s\d)|(?<=^#{abbr.strip})\.(?=\s\d)/, '∯')
+      # txt.gsub!(/(?<=\s#{abbr.strip})\.(?=\s+\()|(?<=^#{abbr.strip})\.(?=\s+\()/, '∯')
+      txt
+    end
+    
+    def replace_pre_parens_abbr(txt, abbr)
       txt.gsub!(/(?<=\s#{abbr.strip})\.(?=\s+\()|(?<=^#{abbr.strip})\.(?=\s+\()/, '∯')
       txt
     end
