@@ -1,3 +1,23 @@
+0.3.18 (2018-03-27):
+
+* Improvement: Performance optimizations
+
+0.3.17 (2017-12-07):
+
+* Bug Fix: Regex for parsing HTML
+
+0.3.16 (2017-11-13):
+
+* Improvement: Support for Danish
+
+0.3.15 (2017-06-28):
+
+* Improvement: Handle em dashes that appear in the middle of a sentence and include a sentence ending punctuation mark
+
+0.3.14 (2017-06-28):
+
+* Improvement: Add English abbreviation Rs. to denote the Indian currency
+
 0.3.13 (2017-01-17):
 
 * Bug Fix: Unexpected sentence break between abbreviation and hyphen

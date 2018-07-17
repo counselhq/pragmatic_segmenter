@@ -1,4 +1,5 @@
 # -*- encoding : utf-8 -*-
+# frozen_string_literal: true
 
 module PragmaticSegmenter
   # This class searches for a list within a string and adds
@@ -41,7 +42,12 @@ module PragmaticSegmenter
     ALPHABETICAL_LIST_LETTERS_AND_PERIODS_REGEX =
       /(?<=^)[a-z]\.|(?<=\A)[a-z]\.|(?<=\s)[a-z]\./i
 
+    # Rubular: http://rubular.com/r/GcnmQt4a3I
+    ROMAN_NUMERALS_IN_PARENTHESES =
+      /\(((?=[mdclxvi])m*(c[md]|d?c*)(x[cl]|l?x*)(i[xv]|v?i*))\)(?=\s[A-Z])/
+
     attr_reader :text
+
     def initialize(text:)
       @text = Text.new(text)
     end
@@ -56,12 +62,7 @@ module PragmaticSegmenter
 
     def replace_parens(split_lists)
       return text unless split_lists
-      ROMAN_NUMERALS.each do |rm|
-        next unless text =~ /\(#{Regexp.escape(rm)}\)\s[A-Z]/
-        text.gsub!(/\(#{Regexp.escape(rm)}\)(?=\s[A-Z])/) do |match|
-          match.gsub!(/\(/, '&✂&').gsub!(/\)/, '&⌬&')
-        end
-      end
+      text.gsub!(ROMAN_NUMERALS_IN_PARENTHESES, '&✂&\1&⌬&'.freeze)
       text
     end
 
@@ -115,9 +116,9 @@ module PragmaticSegmenter
       list_array = @text.scan(regex1).map(&:to_i)
       list_array.each_with_index do |a, i|
         next unless (a + 1).eql?(list_array[i + 1]) ||
-                    (a - 1).eql?(list_array[i - 1]) ||
-                    (a.eql?(0) && list_array[i - 1].eql?(9)) ||
-                    (a.eql?(9) && list_array[i + 1].eql?(0))
+          (a - 1).eql?(list_array[i - 1]) ||
+          (a.eql?(0) && list_array[i - 1].eql?(9)) ||
+          (a.eql?(9) && list_array[i + 1].eql?(0))
         substitute_found_list_items(regex2, a, strip, replacement)
       end
     end
@@ -138,8 +139,8 @@ module PragmaticSegmenter
 
     def add_line_breaks_for_alphabetical_list_with_parens(roman_numeral: false)
       iterate_alphabet_array(ALPHABETICAL_LIST_WITH_PARENS,
-        parens: true,
-        roman_numeral: roman_numeral)
+                             parens: true,
+                             roman_numeral: roman_numeral)
     end
 
     def replace_alphabet_list(a)
@@ -180,18 +181,18 @@ module PragmaticSegmenter
         !alphabet.include?(a) ||
         !alphabet.include?(list_array[i + 1])
       return if alphabet.index(list_array[i + 1]) - alphabet.index(a) != 1 &&
-                (alphabet.index(list_array[i - 1]) - alphabet.index(a)).abs != 1
+        (alphabet.index(list_array[i - 1]) - alphabet.index(a)).abs != 1
       replace_correct_alphabet_list(a, parens)
     end
 
     def iterate_alphabet_array(regex, parens: false, roman_numeral: false)
-      list_array = @text.scan(regex).map { |s| Unicode::downcase(s) }
+      list_array = @text.scan(regex).map {|s| Unicode::downcase(s)}
       if roman_numeral
         alphabet = ROMAN_NUMERALS
       else
         alphabet = LATIN_NUMERALS
       end
-      list_array.delete_if { |item| !alphabet.any? { |a| a.include?(item) } }
+      list_array.delete_if {|item| !alphabet.any? {|a| a.include?(item)}}
       list_array.each_with_index do |a, i|
         if i.eql?(list_array.length - 1)
           last_array_item_replacement(a, i, alphabet, list_array, parens)

@@ -1,267 +1,262 @@
 require 'spec_helper'
 
-RSpec.describe PragmaticSegmenter::Languages::English, "(en)" do
+RSpec.describe PragmaticSegmenter::Languages::Danish, "(da)" do
 
   context "Golden Rules" do
     it "Simple period to end sentence #001" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "Hello World. My name is Jonas.", language: "en")
-      expect(ps.segment).to eq(["Hello World.", "My name is Jonas."])
+      ps = PragmaticSegmenter::Segmenter.new(text: "Hej Verden. Mit navn er Jonas.", language: "da")
+      expect(ps.segment).to eq(["Hej Verden.", "Mit navn er Jonas."])
     end
 
     it "Question mark to end sentence #002" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "What is your name? My name is Jonas.", language: "en")
-      expect(ps.segment).to eq(["What is your name?", "My name is Jonas."])
+      ps = PragmaticSegmenter::Segmenter.new(text: "Hvad er dit navn? Mit nav er Jonas.", language: "da")
+      expect(ps.segment).to eq(["Hvad er dit navn?", "Mit nav er Jonas."])
     end
 
     it "Exclamation point to end sentence #003" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "There it is! I found it.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "There it is! I found it.", language: "da")
       expect(ps.segment).to eq(["There it is!", "I found it."])
     end
 
     it "One letter upper case abbreviations #004" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "My name is Jonas E. Smith.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "My name is Jonas E. Smith.", language: "da")
       expect(ps.segment).to eq(["My name is Jonas E. Smith."])
     end
 
     it "One letter lower case abbreviations #005" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "Please turn to p. 55.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "Please turn to p. 55.", language: "da")
       expect(ps.segment).to eq(["Please turn to p. 55."])
     end
 
     it "Two letter lower case abbreviations in the middle of a sentence #006" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "Were Jane and co. at the party?", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "Were Jane and co. at the party?", language: "da")
       expect(ps.segment).to eq(["Were Jane and co. at the party?"])
     end
 
     it "Two letter upper case abbreviations in the middle of a sentence #007" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "They closed the deal with Pitt, Briggs & Co. at noon.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "They closed the deal with Pitt, Briggs & Co. at noon.", language: "da")
       expect(ps.segment).to eq(["They closed the deal with Pitt, Briggs & Co. at noon."])
     end
 
     it "Two letter lower case abbreviations at the end of a sentence #008" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "Let's ask Jane and co. They should know.", language: "en")
-      expect(ps.segment).to eq(["Let's ask Jane and co.", "They should know."])
+      ps = PragmaticSegmenter::Segmenter.new(text: "Lad os spørge Jane og co. De burde vide det.", language: "da")
+      expect(ps.segment).to eq(["Lad os spørge Jane og co.", "De burde vide det."])
     end
 
     it "Two letter upper case abbreviations at the end of a sentence #009" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "They closed the deal with Pitt, Briggs & Co. It closed yesterday.", language: "en")
-      expect(ps.segment).to eq(["They closed the deal with Pitt, Briggs & Co.", "It closed yesterday."])
+      ps = PragmaticSegmenter::Segmenter.new(text: "De lukkede aftalen med Pitt, Briggs & Co. Det lukkede i går.", language: "da")
+      expect(ps.segment).to eq(["De lukkede aftalen med Pitt, Briggs & Co.", "Det lukkede i går."])
     end
 
     it "Two letter (prepositive) abbreviations #010" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "I can see Mt. Fuji from here.", language: "en")
-      expect(ps.segment).to eq(["I can see Mt. Fuji from here."])
+      ps = PragmaticSegmenter::Segmenter.new(text: "De holdt Skt. Hans i byen.", language: "da")
+      expect(ps.segment).to eq(["De holdt Skt. Hans i byen."])
     end
 
     it "Two letter (prepositive & postpositive) abbreviations #011" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "St. Michael's Church is on 5th st. near the light.", language: "en")
-      expect(ps.segment).to eq(["St. Michael's Church is on 5th st. near the light."])
+      ps = PragmaticSegmenter::Segmenter.new(text: "St. Michael's Kirke er på 5. gade nær ved lyset.", language: "da")
+      expect(ps.segment).to eq(["St. Michael's Kirke er på 5. gade nær ved lyset."])
     end
 
     it "Possesive two letter abbreviations #012" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "That is JFK Jr.'s book.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "That is JFK Jr.'s book.", language: "da")
       expect(ps.segment).to eq(["That is JFK Jr.'s book."])
     end
 
     it "Multi-period abbreviations in the middle of a sentence #013" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "I visited the U.S.A. last year.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "I visited the U.S.A. last year.", language: "da")
       expect(ps.segment).to eq(["I visited the U.S.A. last year."])
     end
 
     it "Multi-period abbreviations at the end of a sentence #014" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "I live in the E.U. How about you?", language: "en")
-      expect(ps.segment).to eq(["I live in the E.U.", "How about you?"])
+      ps = PragmaticSegmenter::Segmenter.new(text: "Jeg bor i E.U. Hvad med dig?", language: "da")
+      expect(ps.segment).to eq(["Jeg bor i E.U.", "Hvad med dig?"])
     end
 
     it "U.S. as sentence boundary #015" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "I live in the U.S. How about you?", language: "en")
-      expect(ps.segment).to eq(["I live in the U.S.", "How about you?"])
+      ps = PragmaticSegmenter::Segmenter.new(text: "I live in the U.S. Hvad med dig?", language: "da")
+      expect(ps.segment).to eq(["I live in the U.S.", "Hvad med dig?"])
     end
 
     it "U.S. as non sentence boundary with next word capitalized #016" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "I work for the U.S. Government in Virginia.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "I work for the U.S. Government in Virginia.", language: "da")
       expect(ps.segment).to eq(["I work for the U.S. Government in Virginia."])
     end
 
     it "U.S. as non sentence boundary #017" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "I have lived in the U.S. for 20 years.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "I have lived in the U.S. for 20 years.", language: "da")
       expect(ps.segment).to eq(["I have lived in the U.S. for 20 years."])
     end
 
     it "A.M. / P.M. as non sentence boundary and sentence boundary #018" do
       skip "NOT IMPLEMENTED"
-      ps = PragmaticSegmenter::Segmenter.new(text: "At 5 a.m. Mr. Smith went to the bank. He left the bank at 6 P.M. Mr. Smith then went to the store.", language: "en")
-      expect(ps.segment).to eq(["At 5 a.m. Mr. Smith went to the bank.", "He left the bank at 6 P.M.", "Mr. Smith then went to the store."])
+      ps = PragmaticSegmenter::Segmenter.new(text: "At 5 a.m. Hr. Smith went to the bank. He left the bank at 6 P.M. Hr. Smith then went to the store.", language: "da")
+      expect(ps.segment).to eq(["At 5 a.m. Hr. Smith went to the bank.", "He left the bank at 6 P.M.", "Hr. Smith then went to the store."])
     end
 
     it "Number as non sentence boundary #019" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "She has $100.00 in her bag.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "She has $100.00 in her bag.", language: "da")
       expect(ps.segment).to eq(["She has $100.00 in her bag."])
     end
 
     it "Number as sentence boundary #020" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "She has $100.00. It is in her bag.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "She has $100.00. It is in her bag.", language: "da")
       expect(ps.segment).to eq(["She has $100.00.", "It is in her bag."])
     end
 
     it "Parenthetical inside sentence #021" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "He teaches science (He previously worked for 5 years as an engineer.) at the local University.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "He teaches science (He previously worked for 5 years as an engineer.) at the local University.", language: "da")
       expect(ps.segment).to eq(["He teaches science (He previously worked for 5 years as an engineer.) at the local University."])
     end
 
     it "Email addresses #022" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "Her email is Jane.Doe@example.com. I sent her an email.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "Her email is Jane.Doe@example.com. I sent her an email.", language: "da")
       expect(ps.segment).to eq(["Her email is Jane.Doe@example.com.", "I sent her an email."])
     end
 
     it "Web addresses #023" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "The site is: https://www.example.50.com/new-site/awesome_content.html. Please check it out.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "The site is: https://www.example.50.com/new-site/awesome_content.html. Please check it out.", language: "da")
       expect(ps.segment).to eq(["The site is: https://www.example.50.com/new-site/awesome_content.html.", "Please check it out."])
     end
 
     it "Single quotations inside sentence #024" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "She turned to him, 'This is great.' she said.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "She turned to him, 'This is great.' she said.", language: "da")
       expect(ps.segment).to eq(["She turned to him, 'This is great.' she said."])
     end
 
     it "Double quotations inside sentence #025" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "She turned to him, \"This is great.\" she said.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "She turned to him, \"This is great.\" she said.", language: "da")
       expect(ps.segment).to eq(["She turned to him, \"This is great.\" she said."])
     end
 
     it "Double quotations at the end of a sentence #026" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "She turned to him, \"This is great.\" She held the book out to show him.", language: "en")
-      expect(ps.segment).to eq(["She turned to him, \"This is great.\"", "She held the book out to show him."])
+      ps = PragmaticSegmenter::Segmenter.new(text: "She turned to him, \"This is great.\" Hun held the book out to show him.", language: "da")
+      expect(ps.segment).to eq(["She turned to him, \"This is great.\"", "Hun held the book out to show him."])
     end
 
     it "Double punctuation (exclamation point) #027" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "Hello!! Long time no see.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "Hello!! Long time no see.", language: "da")
       expect(ps.segment).to eq(["Hello!!", "Long time no see."])
     end
 
     it "Double punctuation (question mark) #028" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "Hello?? Who is there?", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "Hello?? Who is there?", language: "da")
       expect(ps.segment).to eq(["Hello??", "Who is there?"])
     end
 
     it "Double punctuation (exclamation point / question mark) #029" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "Hello!? Is that you?", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "Hello!? Is that you?", language: "da")
       expect(ps.segment).to eq(["Hello!?", "Is that you?"])
     end
 
     it "Double punctuation (question mark / exclamation point) #030" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "Hello?! Is that you?", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "Hello?! Is that you?", language: "da")
       expect(ps.segment).to eq(["Hello?!", "Is that you?"])
     end
 
     it "List (period followed by parens and no period to end item) #031" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "1.) The first item 2.) The second item", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "1.) The first item 2.) The second item", language: "da")
       expect(ps.segment).to eq(["1.) The first item", "2.) The second item"])
     end
 
     it "List (period followed by parens and period to end item) #032" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "1.) The first item. 2.) The second item.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "1.) The first item. 2.) The second item.", language: "da")
       expect(ps.segment).to eq(["1.) The first item.", "2.) The second item."])
     end
 
     it "List (parens and no period to end item) #033" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "1) The first item 2) The second item", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "1) The first item 2) The second item", language: "da")
       expect(ps.segment).to eq(["1) The first item", "2) The second item"])
     end
 
     it "List (parens and period to end item) #034" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "1) The first item. 2) The second item.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "1) The first item. 2) The second item.", language: "da")
       expect(ps.segment).to eq(["1) The first item.", "2) The second item."])
     end
 
     it "List (period to mark list and no period to end item) #035" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "1. The first item 2. The second item", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "1. The first item 2. The second item", language: "da")
       expect(ps.segment).to eq(["1. The first item", "2. The second item"])
     end
 
     it "List (period to mark list and period to end item) #036" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "1. The first item. 2. The second item.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "1. The first item. 2. The second item.", language: "da")
       expect(ps.segment).to eq(["1. The first item.", "2. The second item."])
     end
 
     it "List with bullet #037" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "• 9. The first item • 10. The second item", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "• 9. The first item • 10. The second item", language: "da")
       expect(ps.segment).to eq(["• 9. The first item", "• 10. The second item"])
     end
 
     it "List with hypthen #038" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "⁃9. The first item ⁃10. The second item", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "⁃9. The first item ⁃10. The second item", language: "da")
       expect(ps.segment).to eq(["⁃9. The first item", "⁃10. The second item"])
     end
 
     it "Alphabetical list #039" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "a. The first item b. The second item c. The third list item", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "a. The first item b. The second item c. The third list item", language: "da")
       expect(ps.segment).to eq(["a. The first item", "b. The second item", "c. The third list item"])
     end
 
     it "Errant newlines in the middle of sentences (PDF) #040" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "This is a sentence\ncut off in the middle because pdf.", language: "en", doc_type: "pdf")
+      ps = PragmaticSegmenter::Segmenter.new(text: "This is a sentence\ncut off in the middle because pdf.", language: "da", doc_type: "pdf")
       expect(ps.segment).to eq(["This is a sentence cut off in the middle because pdf."])
     end
 
     it "Errant newlines in the middle of sentences #041" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "It was a cold \nnight in the city.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "It was a cold \nnight in the city.", language: "da")
       expect(ps.segment).to eq(["It was a cold night in the city."])
     end
 
     it "Lower case list separated by newline #042" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "features\ncontact manager\nevents, activities\n", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "features\ncontact manager\nevents, activities\n", language: "da")
       expect(ps.segment).to eq(["features", "contact manager", "events, activities"])
     end
 
     it "Geo Coordinates #043" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "You can find it at N°. 1026.253.553. That is where the treasure is.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "You can find it at N°. 1026.253.553. That is where the treasure is.", language: "da")
       expect(ps.segment).to eq(["You can find it at N°. 1026.253.553.", "That is where the treasure is."])
     end
 
     it "Named entities with an exclamation point #044" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "She works at Yahoo! in the accounting department.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "She works at Yahoo! in the accounting department.", language: "da")
       expect(ps.segment).to eq(["She works at Yahoo! in the accounting department."])
     end
 
-    it "I as a sentence boundary and I as an abbreviation #045" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "We make a good team, you and I. Did you see Albert I. Jones yesterday?", language: "en")
-      expect(ps.segment).to eq(["We make a good team, you and I.", "Did you see Albert I. Jones yesterday?"])
-    end
-
     it "Ellipsis at end of quotation #046" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "Thoreau argues that by simplifying one’s life, “the laws of the universe will appear less complex. . . .”", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "Thoreau argues that by simplifying one’s life, “the laws of the universe will appear less complex. . . .”", language: "da")
       expect(ps.segment).to eq(["Thoreau argues that by simplifying one’s life, “the laws of the universe will appear less complex. . . .”"])
     end
 
     it "Ellipsis with square brackets #047" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "\"Bohr [...] used the analogy of parallel stairways [...]\" (Smith 55).", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "\"Bohr [...] used the analogy of parallel stairways [...]\" (Smith 55).", language: "da")
       expect(ps.segment).to eq(["\"Bohr [...] used the analogy of parallel stairways [...]\" (Smith 55)."])
     end
 
     it "Ellipsis as sentence boundary (standard ellipsis rules) #048" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "If words are left off at the end of a sentence, and that is all that is omitted, indicate the omission with ellipsis marks (preceded and followed by a space) and then indicate the end of the sentence with a period . . . . Next sentence.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "If words are left off at the end of a sentence, and that is all that is omitted, indicate the omission with ellipsis marks (preceded and followed by a space) and then indicate the end of the sentence with a period . . . . Next sentence.", language: "da")
       expect(ps.segment).to eq(["If words are left off at the end of a sentence, and that is all that is omitted, indicate the omission with ellipsis marks (preceded and followed by a space) and then indicate the end of the sentence with a period . . . .", "Next sentence."])
     end
 
     it "Ellipsis as sentence boundary (non-standard ellipsis rules) #049" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "I never meant that.... She left the store.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "I never meant that.... She left the store.", language: "da")
       expect(ps.segment).to eq(["I never meant that....", "She left the store."])
     end
 
     it "Ellipsis as non sentence boundary #050" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "I wasn’t really ... well, what I mean...see . . . what I'm saying, the thing is . . . I didn’t mean it.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "I wasn’t really ... well, what I mean...see . . . what I'm saying, the thing is . . . I didn’t mean it.", language: "da")
       expect(ps.segment).to eq(["I wasn’t really ... well, what I mean...see . . . what I'm saying, the thing is . . . I didn’t mean it."])
     end
 
     it "4-dot ellipsis #051" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "One further habit which was somewhat weakened . . . was that of combining words into self-interpreting compounds. . . . The practice was not abandoned. . . .", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "One further habit which was somewhat weakened . . . was that of combining words into self-interpreting compounds. . . . The practice was not abandoned. . . .", language: "da")
       expect(ps.segment).to eq(["One further habit which was somewhat weakened . . . was that of combining words into self-interpreting compounds.", ". . . The practice was not abandoned. . . ."])
     end
 
     it "No whitespace in between sentences #052" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "Hello world.Today is Tuesday.Mr. Smith went to the store and bought 1,000.That is a lot.", language: "en")
-      expect(ps.segment).to eq(["Hello world.", "Today is Tuesday.", "Mr. Smith went to the store and bought 1,000.", "That is a lot."])
+      ps = PragmaticSegmenter::Segmenter.new(text: "Hello world.I dag is Tuesday.Hr. Smith went to the store and bought 1,000.That is a lot.", language: "da")
+      expect(ps.segment).to eq(["Hello world.", "I dag is Tuesday.", "Hr. Smith went to the store and bought 1,000.", "That is a lot."])
     end
   end
 
@@ -646,17 +641,17 @@ RSpec.describe PragmaticSegmenter::Languages::English, "(en)" do
     end
 
     it 'correctly segments text #075' do
-      ps = PragmaticSegmenter::Segmenter.new(text: "His name is Mark E. Smith. a. here it is b. another c. one more\n They went to the store. It was John A. Smith. She was Jane B. Smith.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "His name is Mark E. Smith. a. here it is b. another c. one more\n They went to the store. It was John A. Smith. She was Jane B. Smith.", language: "da")
       expect(ps.segment).to eq(["His name is Mark E. Smith.", "a. here it is", "b. another", "c. one more", "They went to the store.", "It was John A. Smith.", "She was Jane B. Smith."])
     end
 
     it 'correctly segments text #076' do
-      ps = PragmaticSegmenter::Segmenter.new(text: "a) here it is b) another c) one more\n They went to the store. w) hello x) hello y) hello", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "a) here it is b) another c) one more\n They went to the store. w) hello x) hello y) hello", language: "da")
       expect(ps.segment).to eq(["a) here it is", "b) another", "c) one more", "They went to the store.", "w) hello",  "x) hello",  "y) hello"])
     end
 
     it 'correctly segments text #077' do
-      ps = PragmaticSegmenter::Segmenter.new(text: "Hello{b^&gt;1&lt;b^} hello{b^>1<b^}.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "Hello{b^&gt;1&lt;b^} hello{b^>1<b^}.", language: "da")
       expect(ps.segment).to eq(["Hello hello."])
     end
 
@@ -691,32 +686,32 @@ RSpec.describe PragmaticSegmenter::Languages::English, "(en)" do
     end
 
     it "correctly segments text #083" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "The nurse gave him the i.v. in his vein. She gave him the i.v. It was a great I.V. that she gave him. She gave him the I.V. It was night.", language: "en")
-      expect(ps.segment).to eq(["The nurse gave him the i.v. in his vein.", "She gave him the i.v.", "It was a great I.V. that she gave him.", "She gave him the I.V.", "It was night."])
+      ps = PragmaticSegmenter::Segmenter.new(text: "The nurse gave him the s.u. in his vein. She gave him the s.u. Det var a great S.U. that she gave him. She gave him the S.U. Det was night.", language: "da")
+      expect(ps.segment).to eq(["The nurse gave him the s.u. in his vein.", "She gave him the s.u.", "Det var a great S.U. that she gave him.", "She gave him the S.U.", "Det was night."])
     end
 
     it "correctly segments text #084" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "(i) Hello world. \n(ii) Hello world.\n(iii) Hello world.\n(iv) Hello world.\n(v) Hello world.\n(vi) Hello world.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "(i) Hello world. \n(ii) Hello world.\n(iii) Hello world.\n(iv) Hello world.\n(v) Hello world.\n(vi) Hello world.", language: "da")
       expect(ps.segment).to eq(["(i) Hello world.", "(ii) Hello world.", "(iii) Hello world.", "(iv) Hello world.", "(v) Hello world.", "(vi) Hello world."])
     end
 
     it "correctly segments text #085" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "i) Hello world. \nii) Hello world.\niii) Hello world.\niv) Hello world.\nv) Hello world.\nvi) Hello world.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "i) Hello world. \nii) Hello world.\niii) Hello world.\niv) Hello world.\nv) Hello world.\nvi) Hello world.", language: "da")
       expect(ps.segment).to eq(["i) Hello world.", "ii) Hello world.", "iii) Hello world.", "iv) Hello world.", "v) Hello world.", "vi) Hello world."])
     end
 
     it "correctly segments text #086" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "(a) Hello world. (b) Hello world. (c) Hello world. (d) Hello world. (e) Hello world.\n(f) Hello world.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "(a) Hello world. (b) Hello world. (c) Hello world. (d) Hello world. (e) Hello world.\n(f) Hello world.", language: "da")
       expect(ps.segment).to eq(["(a) Hello world.", "(b) Hello world.", "(c) Hello world.", "(d) Hello world.", "(e) Hello world.", "(f) Hello world."])
     end
 
     it "correctly segments text #087" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "(A) Hello world. \n(B) Hello world.\n(C) Hello world.\n(D) Hello world.\n(E) Hello world.\n(F) Hello world.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "(A) Hello world. \n(B) Hello world.\n(C) Hello world.\n(D) Hello world.\n(E) Hello world.\n(F) Hello world.", language: "da")
       expect(ps.segment).to eq(["(A) Hello world.", "(B) Hello world.", "(C) Hello world.", "(D) Hello world.", "(E) Hello world.", "(F) Hello world."])
     end
 
     it "correctly segments text #088" do
-      ps = PragmaticSegmenter::Segmenter.new(text: "A) Hello world. \nB) Hello world.\nC) Hello world.\nD) Hello world.\nE) Hello world.\nF) Hello world.", language: "en")
+      ps = PragmaticSegmenter::Segmenter.new(text: "A) Hello world. \nB) Hello world.\nC) Hello world.\nD) Hello world.\nE) Hello world.\nF) Hello world.", language: "da")
       expect(ps.segment).to eq(["A) Hello world.", "B) Hello world.", "C) Hello world.", "D) Hello world.", "E) Hello world.", "F) Hello world."])
     end
 
@@ -1399,12 +1394,5 @@ RSpec.describe PragmaticSegmenter::Languages::English, "(en)" do
       ps = PragmaticSegmenter::Segmenter.new(text: "What do you see? - Posted like silent sentinels all around the town, stand thousands upon thousands of mortal men fixed in ocean reveries.", clean: false)
       expect(ps.segment).to eq(["What do you see?", "- Posted like silent sentinels all around the town, stand thousands upon thousands of mortal men fixed in ocean reveries."])
     end
-
-    it 'correctly segments text #117' do
-      text = "In placebo-controlled studies of all uses of Tracleer, marked decreases in hemoglobin (>15% decrease from baseline resulting in values <11 g/ dL) were observed in 6% of Tracleer-treated patients and 3% of placebo-treated patients. Bosentan is highly bound (>98%) to plasma proteins, mainly albumin."
-      ps = PragmaticSegmenter::Segmenter.new(text: text)
-      expect(ps.segment).to eq(["In placebo-controlled studies of all uses of Tracleer, marked decreases in hemoglobin (>15% decrease from baseline resulting in values <11 g/ dL) were observed in 6% of Tracleer-treated patients and 3% of placebo-treated patients.", "Bosentan is highly bound (>98%) to plasma proteins, mainly albumin."])
-    end
-
   end
 end
