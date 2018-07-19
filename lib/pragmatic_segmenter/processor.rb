@@ -20,7 +20,7 @@ module PragmaticSegmenter
     end
 
     def process(text:)
-      @text = List.new(text: text).add_line_break(@split_lists)
+      @text = @split_lists ? List.new(text: text).add_line_break : Text.new(text)
       replace_abbreviations
       replace_numbers
       replace_continuous_punctuation
@@ -91,7 +91,7 @@ module PragmaticSegmenter
         @language::QuestionMarkInQuotationRule,
         @language::ExclamationPointRules::All
       )
-      txt = List.new(text: txt).replace_parens(@split_lists)
+      txt = @split_lists ? List.new(text: txt).replace_parens : Text.new(txt)
       sentence_boundary_punctuation(txt)
     end
 

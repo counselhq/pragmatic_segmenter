@@ -8,7 +8,7 @@ module PragmaticSegmenter
   class Segmenter
     attr_reader :text, :language, :doc_type, :split_lists
 
-    def initialize(text:, language: 'en', doc_type: nil, clean: true, split_lists: false)
+    def initialize(text:, language: 'en', doc_type: nil, clean: true, split_lists: true)
       return unless text
       @language = language
       @language_module = Languages.get_language_by_code(language)
